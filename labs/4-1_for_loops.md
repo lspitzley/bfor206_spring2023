@@ -83,7 +83,7 @@ see the
 
 **Scripts that output bash errors will not be accepted!**
 
-When you are finished, submit two screenshots on Blackboard:
-1.  A screenshot of your code.
-2.  A screenshot of correct output as defined in the
+When you are finished, show:
+1.  Your code.
+2.  Run the script and show hte output as defined in the
     test  cases.
