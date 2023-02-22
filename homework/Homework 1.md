@@ -137,7 +137,7 @@ I will deduct points for certain things:
 All homework will be submitted through Github
 Classroom.
 The link for this is assignment is on
-[Github Classroom](https://classroom.github.com/classrooms/60333327-bfor-206-classroom-b02d2c).
+[Github Classroom](https://classroom.github.com/a/_tEIiZI5).
 
 ## Teams (Optional)
 You may work with one other person. If working with someone else,
