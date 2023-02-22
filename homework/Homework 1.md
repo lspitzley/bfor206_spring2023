@@ -59,10 +59,10 @@ sudo apt install mailutils # install mail package
 
 ```bash
 # to send a message using echo
-echo “message body” | mail -s “subject” lee@lee.local
+echo “message body” | mail -s “subject” kali@kali
 
 # check mail with:
-cat /var/mail/lee
+cat /var/mail/kali
 ```
 
 ## Script functionality
@@ -73,7 +73,6 @@ cat /var/mail/lee
 - Check the output status
 - If the ping is not responding or is missing packets, report this to the log
 and send an email
-- If the ping is high latency, report this to the log and send an email
 - If the device is normal, report this to the log
 - The script should run every five minutes.
 
