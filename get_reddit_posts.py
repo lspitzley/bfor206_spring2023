@@ -75,4 +75,5 @@ submission_df = get_submissions(reddit, 'cybersecurity')
 # check the comments dataframe function
 comments_df = get_comments_from_post(reddit, post_id='120j74c')
 
+print(comments_df.shape)
 # %%
