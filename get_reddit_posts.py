@@ -33,14 +33,14 @@ def get_submissions(reddit, subreddit, limit=10) -> pd.DataFrame:
 	and return them as a dataframe.
 	"""
 
-	submissions = reddit.subreddit(subreddit).hot(limit=limit)
+	submissions = reddit.subreddit(subreddit).top(limit=limit)
 
     # add list to the master list
 	df_rows = []
 	for submission in submissions:
-		df_rows.append([submission.id, submission.score, submission.title, submission.num_comments])
+		df_rows.append([submission.id, submission.score, submission.title, submission.num_comments, submission.subreddit.display_name, submission.author.name, submission.created_utc, submission.selftext])
 
-	post_df = pd.DataFrame(df_rows, columns=['id', 'score', 'title', 'num_comments'])
+	post_df = pd.DataFrame(df_rows, columns=['id', 'score', 'title', 'num_comments', 'subreddit', 'author', 'created_utc', 'selftext'])
 
 	return post_df
 
@@ -76,4 +76,23 @@ submission_df = get_submissions(reddit, 'cybersecurity')
 comments_df = get_comments_from_post(reddit, post_id='120j74c')
 
 print(comments_df.shape)
+# %% read in the list of subreddits
+
+# read in the list of subreddits from a txt file
+with open('subreddit_list.txt', 'r') as f:
+	subreddits = f.read().splitlines()
+
+
+# %% get the top 100 posts from each subreddit
+
+submission_df_list = []
+
+for sr in subreddits:
+	print(sr)
+	submission_df_list.append(get_submissions(reddit, sr, 100))
+
+# %% concatenate the dataframes
+
+submissions_df = pd.concat(submission_df_list)
+
 # %%
