@@ -38,7 +38,21 @@ def get_submissions(reddit, subreddit, limit=10) -> pd.DataFrame:
     # add list to the master list
 	df_rows = []
 	for submission in submissions:
-		df_rows.append([submission.id, submission.score, submission.title, submission.num_comments, submission.subreddit.display_name, submission.author.name, submission.created_utc, submission.selftext])
+		# print(submission.id)
+		# print([submission.author.name])
+
+		"""
+		If the user has deleted their account, there 
+		will not be any value for the author name. We 
+		will replace this with the name [deleted].
+		"""
+		if not hasattr(submission.author, 'name'):
+			print('found deleted user')
+			author_name = '[deleted]'
+		else:
+			author_name = submission.author.name
+
+		df_rows.append([submission.id, submission.score, submission.title, submission.num_comments, submission.subreddit.display_name, author_name, submission.created_utc, submission.selftext])
 
 	post_df = pd.DataFrame(df_rows, columns=['id', 'score', 'title', 'num_comments', 'subreddit', 'author', 'created_utc', 'selftext'])
 
