@@ -72,9 +72,20 @@ def get_comments_from_post(reddit, post_id) -> pd.DataFrame:
 
 	comment_rows = []
 	for comment in comments_list:
-		comment_rows.append([comment.id, comment.score, comment.created_utc, comment.body, comment.parent_id])
+		"""
+		If the user has deleted their account, there 
+		will not be any value for the author name. We 
+		will replace this with the name [deleted].
+		"""
+		if not hasattr(comment.author, 'name'):
+			print('found deleted user')
+			author_name = '[deleted]'
+		else:
+			author_name = comment.author.name
+		
+		comment_rows.append([comment.id, comment.score, comment.created_utc, comment.body, comment.parent_id, author_name])
 
-	comments_df = pd.DataFrame(comment_rows, columns=['id', 'score', 'created_utc', 'body', 'parent_id'])
+	comments_df = pd.DataFrame(comment_rows, columns=['id', 'score', 'created_utc', 'body', 'parent_id', 'author'])
 
 	return comments_df
 
@@ -108,5 +119,26 @@ for sr in subreddits:
 # %% concatenate the dataframes
 
 submissions_df = pd.concat(submission_df_list)
+
+# %% sample 10 posts
+
+# get the id column, randomly sample 10 rows, convert to list
+post_ids = submissions_df['id'].sample(10).to_list()
+
+# %% get comments for the posts
+
+comment_df_list = []
+
+for post in post_ids:
+	print('working on', post)
+	comment_df_list.append(get_comments_from_post(reddit, post))
+
+# %% concatenate all comments into one df
+
+comments_df = pd.concat(comment_df_list)
+
+# %% write data into csv
+
+comments_df.to_csv('data/comments_df_10.csv')
 
 # %%

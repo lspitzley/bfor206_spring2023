@@ -56,7 +56,6 @@ maximum of [18] possible points.
 2. Which subreddit has the most distinct comment authors?
 3. Which subreddit contains the greatest percentage of submissions
    with a body (i.e. contains a value in the `body` column)?
-4. 
 
 ## 3. Visualize the data (4 points)
 
