@@ -3,3 +3,4 @@ output.log
 .spyproject/*
 data/*
 .env
+__pycache__/text_processing.cpython-39.pyc
