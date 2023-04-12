@@ -36,12 +36,13 @@ maximum of [18] possible points.
    - `subreddit`: the name of the subreddit
    - `id`: the unique identifier for the post
    - `score`: the score of the post
-   - `author_id`: the author of the post
-   - `time`: the time the post was created
+   - `author`: the author of the post
+   - `created_utc`: the time the post was created
 
    For submissions, also add:
    - `title`: the title of the post
-   - `body`: the body of the post
+   - `selftext`: the body of the post
+   - `num_comments`: the number of comments on the post
 
    For comments, add:
    - `comment`: the body of the comment
