@@ -83,9 +83,9 @@ def get_comments_from_post(reddit, post_id) -> pd.DataFrame:
 		else:
 			author_name = comment.author.name
 		
-		comment_rows.append([comment.id, comment.score, comment.created_utc, comment.body, comment.parent_id, author_name])
+		comment_rows.append([comment.id, comment.score, comment.created_utc, comment.body, comment.parent_id, author_name, comment.subreddit.display_name])
 
-	comments_df = pd.DataFrame(comment_rows, columns=['id', 'score', 'created_utc', 'body', 'parent_id', 'author'])
+	comments_df = pd.DataFrame(comment_rows, columns=['id', 'score', 'created_utc', 'body', 'parent_id', 'author', 'subreddit'])
 
 	return comments_df
 
