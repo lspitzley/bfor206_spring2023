@@ -118,54 +118,56 @@ def get_comments_from_post(reddit, post_id) -> pd.DataFrame:
 
 # %% test our functions
 
-# authentication function
-reddit = reddit_connection()
+if __name__ == '__main__':
 
-# check the get submissions function
-submission_df = get_submissions(reddit, 'cybersecurity')
+	# authentication function
+	reddit = reddit_connection()
 
-# check the comments dataframe function
-comments_df = get_comments_from_post(reddit, post_id='120j74c')
+	# check the get submissions function
+	submission_df = get_submissions(reddit, 'cybersecurity')
 
-print(comments_df.shape)
-# %% read in the list of subreddits
+	# check the comments dataframe function
+	comments_df = get_comments_from_post(reddit, post_id='120j74c')
 
-# read in the list of subreddits from a txt file
-with open('subreddit_list.txt', 'r') as f:
-	subreddits = f.read().splitlines()
+	print(comments_df.shape)
+	# %% read in the list of subreddits
+
+	# read in the list of subreddits from a txt file
+	with open('subreddit_list.txt', 'r') as f:
+		subreddits = f.read().splitlines()
 
 
-# %% get the top 100 posts from each subreddit
+	# %% get the top 100 posts from each subreddit
 
-submission_df_list = []
+	submission_df_list = []
 
-for sr in subreddits:
-	print(sr)
-	submission_df_list.append(get_submissions(reddit, sr, 100))
+	for sr in subreddits:
+		print(sr)
+		submission_df_list.append(get_submissions(reddit, sr, 100))
 
-# %% concatenate the dataframes
+	# %% concatenate the dataframes
 
-submissions_df = pd.concat(submission_df_list)
+	submissions_df = pd.concat(submission_df_list)
 
-# %% sample 10 posts
+	# %% sample 10 posts
 
-# get the id column, randomly sample 10 rows, convert to list
-post_ids = submissions_df['id'].sample(10).to_list()
+	# get the id column, randomly sample 10 rows, convert to list
+	post_ids = submissions_df['id'].sample(10).to_list()
 
-# %% get comments for the posts
+	# %% get comments for the posts
 
-comment_df_list = []
+	comment_df_list = []
 
-for post in post_ids:
-	print('working on', post)
-	comment_df_list.append(get_comments_from_post(reddit, post))
+	for post in post_ids:
+		print('working on', post)
+		comment_df_list.append(get_comments_from_post(reddit, post))
 
-# %% concatenate all comments into one df
+	# %% concatenate all comments into one df
 
-comments_df = pd.concat(comment_df_list)
+	comments_df = pd.concat(comment_df_list)
 
-# %% write data into csv
+	# %% write data into csv
 
-comments_df.to_csv('data/comments_df_10.csv')
+	comments_df.to_csv('data/comments_df_10.csv')
 
-# %%
+	# %%
