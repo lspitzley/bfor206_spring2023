@@ -24,6 +24,9 @@ The homework is due on **May 10th at 11:59pm**.
 1. What is your method to choose a post or comment to respond to? 
    What are the pros and cons of your method? (2pts)
 
+   Write the response to this in your Jupyter Notebook or 
+   document it in the function docstring.
+
 2. Provide two examples of posts or comments that your bot 
    would respond to. (2pts)
 
