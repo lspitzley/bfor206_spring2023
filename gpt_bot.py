@@ -17,14 +17,14 @@ load_dotenv()
 openai.api_key = os.environ.get('OPEN_AI_KEY')
 openai.Model.list()
 
-def find_relevant_posts(submission_df):
+def find_relevant_posts(submissions_df, num_posts=1):
 	"""
 	Find posts that seem good to respond to.
 	You can adjust your criteria to choose what you like.
 	This could be based on score, keywords, etc.
 	"""
 
-	top_post = submissions_df.sort_values(by='created_utc', ascending=False).head(1)
+	top_post = submissions_df.sort_values(by='created_utc', ascending=False).head(num_posts)
 
 	return top_post
 
@@ -37,6 +37,55 @@ def prompt_gpt(prompt: str):
 	messages=[{"role": "user", "content": prompt}])
 
 	return completion.choices[0].message
+
+def has_ai_language(response: str) -> bool:
+	"""
+	This function will check if the response contains
+	the "As an AI language model..." disclaimer.
+	
+	"""
+
+	check_string = "As an AI language model".lower()
+
+	if check_string in response.lower():
+		return True
+	else:
+		return False
+
+# check ai language function
+def test_has_ai_language():
+	assert True == has_ai_language("As an AI language model, I don't have personal opinions.")
+	assert False == has_ai_language("I don't have personal opinions.")
+
+
+
+def check_post_history(post_id: str, history_file: str) -> bool:
+	"""
+	This function will update the post history with
+	the post id of the post that was responded to.
+
+	If the post id is already in the file, it will
+	return True. Otherwise it will write the post id
+	to the file and return False.
+	"""
+	
+	# check for post id in file
+	# https://stackoverflow.com/questions/15233340
+	with open(history_file, 'r') as f:
+		post_ids = f.read().splitlines()
+
+	print(post_ids)
+	# check if post id is in file
+	if post_id in post_ids:
+		print("Post has already been responded to.")
+		return True
+	
+	# add post id to file
+	with open(history_file, 'a') as f:
+		f.write(post_id + '\n')
+	
+	return False
+		
 
 # %% main 
 
@@ -53,14 +102,39 @@ if __name__ == '__main__':
 		# this function is a simpler version of what we had earlier
 		submissions_df = grp.create_submission_df(submissions)
 
-		# find relevant posts
-		top_post = find_relevant_posts(submissions_df)
+		top_posts = find_relevant_posts(submissions_df, 5)
 
-		prompt = top_post['title'].values[0]
+		# check if there are any posts to respond to
+		for index, submission in top_posts.iterrows():
+			print(submission['id'])
 
-		print("Post title:", prompt)
+			# check if post has been responded to
+			if check_post_history(submission['id'], 'data/post_history.txt'):
+				# skip this post
+				continue
 
-		# prompt GPT
-		response = prompt_gpt(prompt)
+			prompt = submission['title']
 
-		print("GPT response:", response.content)
+			print("Post title:", prompt)
+
+			# prompt GPT
+			response = prompt_gpt(prompt)
+
+			print("GPT response:", response.content)
+
+			# check if response is AI language
+			if has_ai_language(response.content):
+				print("Response is AI language")
+				continue # skip this post
+
+			# post response to reddit
+			reply = reddit.submission(submission['id']).reply(response.content)
+
+			print('posted: ', reply)
+
+# %%
+
+# test the check_post_history function
+def test_check_post_history():
+	assert True == check_post_history('test1', 'data/post_history.txt')
+# %%
