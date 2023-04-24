@@ -85,12 +85,15 @@ def check_post_history(post_id: str, history_file: str) -> bool:
 		f.write(post_id + '\n')
 	
 	return False
-		
+
+# test the check_post_history function
+def test_check_post_history():
+	assert True == check_post_history('test1', 'data/post_history.txt')
+
 
 # %% main 
 
 if __name__ == '__main__':
-
 
 		print('Running GPT Bot')
 
@@ -132,9 +135,4 @@ if __name__ == '__main__':
 
 			print('posted: ', reply)
 
-# %%
-
-# test the check_post_history function
-def test_check_post_history():
-	assert True == check_post_history('test1', 'data/post_history.txt')
 # %%

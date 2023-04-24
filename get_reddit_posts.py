@@ -14,14 +14,19 @@ import pandas as pd
 load_dotenv()
 APP_ID = os.environ.get('APP_ID')
 API_SECRET = os.environ.get('API_SECRET')
-print('APP_ID:\t\t', APP_ID)
-print('API_SECRET:\t', API_SECRET)
+# print('APP_ID:\t\t', APP_ID)
+# print('API_SECRET:\t', API_SECRET)
+REDDIT_USERNAME = os.environ.get('REDDIT_USERNAME')
+REDDIT_PASSWORD = os.environ.get('REDDIT_PASSWORD')
+
 
 # %% connect to reddit
 def reddit_connection():
 	reddit = praw.Reddit(client_id=APP_ID,
 		client_secret=API_SECRET,
-		user_agent='Post Downloader')
+		user_agent='Post Downloader',
+		username=REDDIT_USERNAME,
+		password=REDDIT_PASSWORD)
 	print('Successful app authentication:', reddit.read_only)
 
 	return reddit
