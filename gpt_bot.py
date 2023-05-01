@@ -100,12 +100,12 @@ if __name__ == '__main__':
 		reddit = grp.reddit_connection()
 
 		# get posts
-		submissions = reddit.subreddit('AskReddit').hot(limit=5)
+		submissions = reddit.subreddit('AskReddit').new(limit=10)
 
 		# this function is a simpler version of what we had earlier
 		submissions_df = grp.create_submission_df(submissions)
 
-		top_posts = find_relevant_posts(submissions_df, 5)
+		top_posts = find_relevant_posts(submissions_df, 10)
 
 		# check if there are any posts to respond to
 		for index, submission in top_posts.iterrows():
@@ -134,5 +134,17 @@ if __name__ == '__main__':
 			reply = reddit.submission(submission['id']).reply(response.content)
 
 			print('posted: ', reply)
+
+		# get posts history from our bot
+
+		my_comments_list = reddit.user.me().comments.top('all')
+
+		comments_df = grp.create_comments_df(my_comments_list)
+
+		import datetime
+
+		filename = 'bot_history_' + datetime.datetime.now().strftime("%Y-%m-%d_%I-%M-%S-%p")
+
+		comments_df.to_csv('data/' + filename + '.csv')
 
 # %%

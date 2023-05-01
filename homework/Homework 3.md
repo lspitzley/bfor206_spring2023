@@ -57,7 +57,7 @@ The homework is due on **May 10th at 11:59pm**.
 ```python
 import datetime
 
-filename = 'bot_history_' + datetime.now().strftime("%Y-%m-%d_%I-%M-%S-%p")
+filename = 'bot_history_' + datetime.datetime.now().strftime("%Y-%m-%d_%I-%M-%S-%p")
 ```
 
 ## Part 4: Run the bot on a schedule
