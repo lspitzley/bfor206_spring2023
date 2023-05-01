@@ -121,6 +121,32 @@ def get_comments_from_post(reddit, post_id) -> pd.DataFrame:
 
 	return comments_df
 
+def create_comments_df(comments_list) -> pd.DataFrame:
+	"""
+	This function takes a comments ListGenerator from praw and
+	returns a dataframe.
+	
+	"""
+
+	comment_rows = []
+	for comment in comments_list:
+		"""
+		If the user has deleted their account, there 
+		will not be any value for the author name. We 
+		will replace this with the name [deleted].
+		"""
+		if not hasattr(comment.author, 'name'):
+			print('found deleted user')
+			author_name = '[deleted]'
+		else:
+			author_name = comment.author.name
+		
+		comment_rows.append([comment.id, comment.score, comment.created_utc, comment.body, comment.parent_id, author_name, comment.subreddit.display_name])
+
+	comments_df = pd.DataFrame(comment_rows, columns=['id', 'score', 'created_utc', 'body', 'parent_id', 'author', 'subreddit'])
+
+	return comments_df
+
 # %% test our functions
 
 if __name__ == '__main__':
