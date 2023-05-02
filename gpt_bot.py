@@ -116,6 +116,10 @@ if __name__ == '__main__':
 				# skip this post
 				continue
 
+			# sleep for 20 seconds to prevent rate limiting
+			import time
+			time.sleep(20)
+
 			prompt = submission['title']
 
 			print("Post title:", prompt)
